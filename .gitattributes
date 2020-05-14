@@ -1,0 +1,9 @@
+*.pbxproj -text
+# specific for windows script files
+*.bat text eol=crlf
+
+babel.config.js linguist-vendored=true
+metro.config.js linguist-vendored=true
+example/transformer.js linguist-vendored=true
+example/android linguist-vendored=true
+example/ios linguist-vendored=true
