@@ -1,0 +1,13 @@
+.circleci/
+.vscode/
+android/build/
+example/
+src/__tests__/
+.gitattributes
+.gitignore
+babel.config.js
+tsconfig.json
+yarn.lock
+CONTRIBUTING.md
+ios/WebViewAlternative.xcodeproj/xcuserdata/
+ios/WebViewAlternative.xcodeproj/project.xcworkspace/xcuserdata/

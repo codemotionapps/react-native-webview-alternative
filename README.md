@@ -96,7 +96,7 @@ When set to `true` this will hide the default keyboard accessory view.
 Calls [`requestFocus`](https://developer.android.com/reference/android/webkit/WebView#requestFocus(int,%20android.graphics.Rect)) and shows the keyboard.
 
 #### iOS
-Calls [`HTMLElement.blur()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOrForeignElement/blur) and [`HTMLElement.focus()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOrForeignElement/focus) on [`document.activeElement`](https://developer.mozilla.org/en-US/docs/Web/API/DocumentOrShadowRoot/activeElement). It won't work if [`keyboardDisplayRequiresUserAction`](#keyboardDisplayRequiresUserAction) is `true` or if `document.activeElement` is not [`document.activeElement`](https://developer.mozilla.org/en-US/docs/Web/API/DocumentOrShadowRoot/activeElement). It is recommended to just focus your field from JavaScript instead of calling this method, calling blur beforehand may be required.
+Calls [`HTMLElement.blur()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOrForeignElement/blur) and [`HTMLElement.focus()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOrForeignElement/focus) on [`document.activeElement`](https://developer.mozilla.org/en-US/docs/Web/API/DocumentOrShadowRoot/activeElement). It won't work if [`keyboardDisplayRequiresUserAction`](#keyboardDisplayRequiresUserAction) is `true` or if [`document.activeElement`](https://developer.mozilla.org/en-US/docs/Web/API/DocumentOrShadowRoot/activeElement) is not focusable. It is recommended to just focus your field from JavaScript instead of calling this method, calling blur beforehand may be required.
 
 ### `injectJavaScript(string)`
 

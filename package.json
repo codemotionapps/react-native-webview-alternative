@@ -7,20 +7,11 @@
   "types": "lib/typescript/src/index.d.ts",
   "react-native": "src/index.tsx",
   "source": "src/index.tsx",
-  "files": [
-    "src",
-    "lib",
-    "android",
-    "ios",
-    "cpp",
-    "react-native-webview-alternative.podspec"
-  ],
   "scripts": {
     "test": "jest",
     "typescript": "tsc --noEmit",
     "lint": "eslint --ext .js,.ts,.tsx .",
     "prepare": "bob build && rimraf lib/typescript/src/__tests__ lib/typescript/example",
-    "release": "release-it",
     "example": "yarn --cwd example",
     "pods": "cd example && pod-install --quiet",
     "bootstrap": "yarn example && yarn && yarn pods"
@@ -41,7 +32,6 @@
     "@babel/core": "^7.9.6",
     "@react-native-community/bob": "^0.14.2",
     "@react-native-community/eslint-config": "^1.1.0",
-    "@release-it/conventional-changelog": "^1.1.4",
     "@types/jest": "^25.2.1",
     "@types/react": "^16.9.19",
     "@types/react-native": "0.62.7",
@@ -54,7 +44,6 @@
     "prettier": "^2.0.5",
     "react": "~16.9.0",
     "react-native": "~0.61.5",
-    "release-it": "^13.5.8",
     "typescript": "^3.8.3"
   },
   "peerDependencies": {
@@ -103,23 +92,6 @@
     "tabWidth": 2,
     "trailingComma": "es5",
     "useTabs": false
-  },
-  "release-it": {
-    "git": {
-      "commitMessage": "chore: release ${version}",
-      "tagName": "v${version}"
-    },
-    "npm": {
-      "publish": true
-    },
-    "github": {
-      "release": true
-    },
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": "angular"
-      }
-    }
   },
   "@react-native-community/bob": {
     "source": "src",
