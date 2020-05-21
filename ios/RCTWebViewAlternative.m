@@ -132,4 +132,15 @@
     method_setImplementation(method, override);
 }
 
+#pragma mark - WKScriptMessageHandler
+
+- (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
+    if (!self.onMessage) return;
+    if (message.body == nil) return;
+
+    self.onMessage(@{
+        @"message": message.body,
+    });
+}
+
 @end

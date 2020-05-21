@@ -5,5 +5,7 @@
 babel.config.js linguist-vendored=true
 metro.config.js linguist-vendored=true
 example/transformer.js linguist-vendored=true
-example/android linguist-vendored=true
-example/ios linguist-vendored=true
+example/android/* linguist-vendored=true
+example/ios/* linguist-vendored=true
+Podfile linguist-vendored=true
+*.podspec linguist-vendored=true

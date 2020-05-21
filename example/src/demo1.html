@@ -17,9 +17,11 @@
     <h6>Helloo</h6>
     <input type="text" id="asd" autofocus />
     <script type="text/javascript">
-      setTimeout(() => {
-        // document.getElementById('asd').focus();
-      }, 1000);
+      window.input = document.getElementById('asd');
+      input.addEventListener('input', () => {
+        console.log(input.value);
+        typeof webkit === "object" ? webkit.messageHandlers.jsMessageHandler.postMessage(input.value) : JSBridge.postString(input.value)
+      })
     </script>
   </body>
 </html>

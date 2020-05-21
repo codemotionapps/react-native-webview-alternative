@@ -11,10 +11,12 @@ interface WebViewAlternativeProps extends ViewProps, WebViewAlternativePropsIOS 
 	children?: ReactNode
 	scrollEnabled?: boolean
 	onLoad?(): void
+	onMessage?(event: { nativeEvent: { message: object | string | number | boolean } }): void
 }
 
 export interface WebViewAlternativeRef {
 	focus(): void
+	injectJavaScript(string: string): void
 }
 
 export type WebViewRef = WebViewAlternativeRef
@@ -50,6 +52,13 @@ function WebViewAlternative({ source = null, ...props }: WebViewAlternativeProps
 				findNodeHandle(nativeComponentRef.current),
 				UIManager.getViewManagerConfig('WebViewAlternative').Commands.focus,
 				undefined,
+			)
+		},
+		injectJavaScript(string: string) {
+			UIManager.dispatchViewManagerCommand(
+				findNodeHandle(nativeComponentRef.current),
+				UIManager.getViewManagerConfig('WebViewAlternative').Commands.injectJavaScript,
+				[string],
 			)
 		},
 	}))

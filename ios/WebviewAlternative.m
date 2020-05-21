@@ -15,6 +15,7 @@ RCT_EXPORT_MODULE(WebViewAlternative)
 - (RCTWebViewAlternative *)view {
     RCTWebViewAlternative *view = [RCTWebViewAlternative new];
     view.navigationDelegate = self;
+    [view.configuration.userContentController addScriptMessageHandler:view name:@"jsMessageHandler"];
     return view;
 }
 
@@ -42,11 +43,24 @@ RCT_EXPORT_METHOD(loadHTMLString:(nonnull NSNumber *) reactTag string:(nonnull N
     }];
 }
 
+RCT_EXPORT_METHOD(injectJavaScript:(nonnull NSNumber *) reactTag string:(nonnull NSString *)string) {
+    [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+        UIView *view = viewRegistry[reactTag];
+        if (!view || ![view isKindOfClass:RCTWebViewAlternative.class]) {
+            RCTLogError(@"Cannot find NativeView with tag #%@", reactTag);
+            return;
+        }
+
+        [(RCTWebViewAlternative *)view evaluateJavaScript:string completionHandler:nil];
+    }];
+}
+
 RCT_EXPORT_VIEW_PROPERTY(scrollEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(keyboardDisplayRequiresUserAction, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(hideKeyboardAccessoryView, BOOL)
 
 RCT_EXPORT_VIEW_PROPERTY(onLoad, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onMessage, RCTDirectEventBlock)
 
 #pragma mark - WKNavigationDelegate
 

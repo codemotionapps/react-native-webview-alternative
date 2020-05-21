@@ -56,6 +56,22 @@ Called when page finishes loading.
 |----|--------|
 |function|No|
 
+### `onMessage`
+
+Called when a message is sent from the webview.
+
+#### iOS
+
+Use `webkit.messageHandlers.jsMessageHandler.postMessage(message)` to send your message. Supported types are object, string, number, and boolean. You will receive `message` as a property of `nativeEvent`.
+
+#### Android
+
+Use `JSBridge.postString(string)` to send a string. Use `JSBridge.postNumber(number)` to send a number. Use `JSBridge.postBoolean(boolean)` to send a boolean. Use `JSBridge.postNull()` to send `null`. You will receive your message as a property of `nativeEvent`.
+
+|Type|Required|
+|----|--------|
+|function|No|
+
 ### `keyboardDisplayRequiresUserAction`
 
 When set `false` allows [`HTMLElement.focus()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOrForeignElement/focus), and [`autofocus` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autofocus) to display the keyboard.
@@ -77,10 +93,14 @@ When set to `true` this will hide the default keyboard accessory view.
 ### `focus()`
 
 #### Android
-Calls [`requestFocus`](https://developer.android.com/reference/android/webkit/WebView#requestFocus(int,%20android.graphics.Rect)).
+Calls [`requestFocus`](https://developer.android.com/reference/android/webkit/WebView#requestFocus(int,%20android.graphics.Rect)) and shows the keyboard.
 
 #### iOS
 Calls [`HTMLElement.blur()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOrForeignElement/blur) and [`HTMLElement.focus()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOrForeignElement/focus) on [`document.activeElement`](https://developer.mozilla.org/en-US/docs/Web/API/DocumentOrShadowRoot/activeElement). It won't work if [`keyboardDisplayRequiresUserAction`](#keyboardDisplayRequiresUserAction) is `true` or if `document.activeElement` is not [`document.activeElement`](https://developer.mozilla.org/en-US/docs/Web/API/DocumentOrShadowRoot/activeElement). It is recommended to just focus your field from JavaScript instead of calling this method, calling blur beforehand may be required.
+
+### `injectJavaScript(string)`
+
+Executes the JavaScript string.
 
 ## Requirements
 

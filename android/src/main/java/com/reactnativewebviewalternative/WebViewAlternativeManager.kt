@@ -1,16 +1,14 @@
 package com.reactnativewebviewalternative
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.util.Log
+import android.os.Build
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.content.ContextCompat.getSystemService
-import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContext
-import com.facebook.react.bridge.ReadableArray
+import com.facebook.react.bridge.*
 import com.facebook.react.common.MapBuilder
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
@@ -18,12 +16,11 @@ import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.events.RCTEventEmitter
 
 
-class WebViewAlternativeManager(reactContext: ReactApplicationContext): SimpleViewManager<WebView>() {
-    val reactContext = reactContext
-
+class WebViewAlternativeManager(private val reactContext: ReactApplicationContext): SimpleViewManager<WebView>() {
     enum class Command(val commandId: Int) {
         LOAD_HTML_STRING(1),
         FOCUS(2),
+        INJECT_JAVASCRIPT(3),
     }
 
     companion object {
@@ -46,6 +43,44 @@ class WebViewAlternativeManager(reactContext: ReactApplicationContext): SimpleVi
                         null)
             }
         }
+
+        webView.settings.javaScriptEnabled = true
+        webView.addJavascriptInterface(object : Object() {
+            fun sendMessage(message: WritableMap) {
+                reactContext.getJSModule(RCTEventEmitter::class.java).receiveEvent(
+                        webView.id,
+                        "message",
+                        message)
+            }
+
+            @JavascriptInterface
+            fun postNull() {
+                val writableMap = Arguments.createMap()
+                writableMap.putNull("message")
+                sendMessage(writableMap)
+            }
+
+            @JavascriptInterface
+            fun postString(message: String) {
+                val writableMap = Arguments.createMap()
+                writableMap.putString("message", message)
+                sendMessage(writableMap)
+            }
+
+            @JavascriptInterface
+            fun postBoolean(message: Boolean) {
+                val writableMap = Arguments.createMap()
+                writableMap.putBoolean("message", message)
+                sendMessage(writableMap)
+            }
+
+            @JavascriptInterface
+            fun postNumber(message: Double) {
+                val writableMap = Arguments.createMap()
+                writableMap.putDouble("message", message)
+                sendMessage(writableMap)
+            }
+        }, "JSBridge")
 
         return webView
     }
@@ -77,15 +112,22 @@ class WebViewAlternativeManager(reactContext: ReactApplicationContext): SimpleVi
                     imm != null && imm.showSoftInput(root, InputMethodManager.SHOW_IMPLICIT)
                 }
             }
+            Command.INJECT_JAVASCRIPT.commandId -> {
+                if (args != null) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        root.evaluateJavascript(args.getString(0), null)
+                    }
+                }
+            }
         }
     }
 
     override fun getCommandsMap(): Map<String, Int> {
-        return MapBuilder.of("loadHTMLString", Command.LOAD_HTML_STRING.commandId, "focus", Command.FOCUS.commandId)
+        return MapBuilder.of("loadHTMLString", Command.LOAD_HTML_STRING.commandId, "focus", Command.FOCUS.commandId, "injectJavaScript", Command.INJECT_JAVASCRIPT.commandId)
     }
 
     override fun getExportedCustomDirectEventTypeConstants(): Map<String, Map<String, String>> {
-        return MapBuilder.of("load", MapBuilder.of("registrationName", "onLoad"))
+        return MapBuilder.of("load", MapBuilder.of("registrationName", "onLoad"), "message", MapBuilder.of("registrationName", "onMessage"))
     }
 
 //    override fun getExportedCustomBubblingEventTypeConstants(): Map<String, Map<String, Map<String, String>>> {
