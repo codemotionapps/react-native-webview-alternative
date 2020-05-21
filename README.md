@@ -42,7 +42,7 @@ Load HTML into the WebView.
 
 ### `scrollEnabled`
 
-When set `false` disables scrolling and pinch to zoom. Make sure to add `maximum-scale` to your viewport meta tag in order to prevent automatic scaling when focusing an input with a small font size on iOS.
+When set to `false` disables scrolling and pinch to zoom. Make sure to add `maximum-scale` to your viewport meta tag in order to prevent automatic scaling when focusing an input with a small font size on iOS.
 
 |Type|Required|Default value|
 |----|--------|-------------|
@@ -74,7 +74,7 @@ Use `JSBridge.postString(string)` to send a string. Use `JSBridge.postNumber(num
 
 ### `keyboardDisplayRequiresUserAction`
 
-When set `false` allows [`HTMLElement.focus()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOrForeignElement/focus), and [`autofocus` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autofocus) to display the keyboard.
+When set to `false` allows [`HTMLElement.focus()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOrForeignElement/focus), and [`autofocus` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autofocus) to display the keyboard.
 
 |Type|Required|Default value|Platform|
 |----|--------|-------------|--------|
