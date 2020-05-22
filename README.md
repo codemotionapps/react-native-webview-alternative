@@ -92,8 +92,8 @@ When set to `true` this will hide the default keyboard accessory view.
 
 ### `focus()`
 
-```javascript
-focus(string: string)
+```typescript
+focus()
 ```
 
 #### Android
@@ -104,7 +104,7 @@ Calls [`HTMLElement.blur()`](https://developer.mozilla.org/en-US/docs/Web/API/HT
 
 ### `injectJavaScript()`
 
-```javascript
+```typescript
 injectJavaScript(string: string)
 ```
 
@@ -112,7 +112,7 @@ Executes the JavaScript string.
 
 ### `scrollTo()`
 
-```javascript
+```typescript
 scrollTo(options?: {x?: number, y?: number, animated?: boolean})
 ```
 
