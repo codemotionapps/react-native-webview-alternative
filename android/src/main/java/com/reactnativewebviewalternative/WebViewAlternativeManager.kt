@@ -1,6 +1,11 @@
 package com.reactnativewebviewalternative
 
+import android.R.attr.x
+import android.R.attr.y
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.os.Build
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
@@ -21,6 +26,7 @@ class WebViewAlternativeManager(private val reactContext: ReactApplicationContex
         LOAD_HTML_STRING(1),
         FOCUS(2),
         INJECT_JAVASCRIPT(3),
+        SCROLL_TO(4),
     }
 
     companion object {
@@ -119,11 +125,29 @@ class WebViewAlternativeManager(private val reactContext: ReactApplicationContex
                     }
                 }
             }
+            Command.SCROLL_TO.commandId -> {
+                if (args != null) {
+                    val density = Resources.getSystem().displayMetrics.density
+                    val x = (args.getDouble(0) * density).toInt()
+                    val y = (args.getDouble(1) * density).toInt()
+                    if (args.getBoolean(2)) {
+                        val scrollX = PropertyValuesHolder.ofInt("scrollX", root.scrollX, x)
+                        val scrollY = PropertyValuesHolder.ofInt("scrollY", root.scrollY, y)
+                        ObjectAnimator.ofPropertyValuesHolder(root, scrollX, scrollY).start()
+                    } else {
+                        root.scrollTo(x, y)
+                    }
+                }
+            }
         }
     }
 
     override fun getCommandsMap(): Map<String, Int> {
-        return MapBuilder.of("loadHTMLString", Command.LOAD_HTML_STRING.commandId, "focus", Command.FOCUS.commandId, "injectJavaScript", Command.INJECT_JAVASCRIPT.commandId)
+        return MapBuilder.of("loadHTMLString", Command.LOAD_HTML_STRING.commandId,
+                "focus", Command.FOCUS.commandId,
+                "injectJavaScript", Command.INJECT_JAVASCRIPT.commandId,
+                "scrollTo", Command.SCROLL_TO.commandId
+        )
     }
 
     override fun getExportedCustomDirectEventTypeConstants(): Map<String, Map<String, String>> {

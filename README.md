@@ -92,16 +92,33 @@ When set to `true` this will hide the default keyboard accessory view.
 
 ### `focus()`
 
+```javascript
+focus(string: string)
+```
+
 #### Android
-Calls [`requestFocus`](https://developer.android.com/reference/android/webkit/WebView#requestFocus(int,%20android.graphics.Rect)) and shows the keyboard.
+Calls [`requestFocus()`](https://developer.android.com/reference/android/webkit/WebView#requestFocus(int,%20android.graphics.Rect)) and shows the keyboard.
 
 #### iOS
 Calls [`HTMLElement.blur()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOrForeignElement/blur) and [`HTMLElement.focus()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOrForeignElement/focus) on [`document.activeElement`](https://developer.mozilla.org/en-US/docs/Web/API/DocumentOrShadowRoot/activeElement). It won't work if [`keyboardDisplayRequiresUserAction`](#keyboardDisplayRequiresUserAction) is `true` or if [`document.activeElement`](https://developer.mozilla.org/en-US/docs/Web/API/DocumentOrShadowRoot/activeElement) is not focusable. It is recommended to just focus your field from JavaScript instead of calling this method, calling blur beforehand may be required.
 
-### `injectJavaScript(string)`
+### `injectJavaScript()`
+
+```javascript
+injectJavaScript(string: string)
+```
 
 Executes the JavaScript string.
 
+### `scrollTo()`
+
+```javascript
+scrollTo(options?: {x?: number, y?: number, animated?: boolean})
+```
+
+Scrolls to a given x, y offset, either immediately or with a smooth animation.
+
+By default x and y are `0`, animated is `true`.
 ## Requirements
 
 - React Native 0.60 or later

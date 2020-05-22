@@ -55,6 +55,18 @@ RCT_EXPORT_METHOD(injectJavaScript:(nonnull NSNumber *) reactTag string:(nonnull
     }];
 }
 
+RCT_EXPORT_METHOD(scrollTo:(nonnull NSNumber *) reactTag offsetX:(CGFloat)x offsetY:(CGFloat)y animated:(BOOL)animated) {
+    [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+        UIView *view = viewRegistry[reactTag];
+        if (!view || ![view isKindOfClass:RCTWebViewAlternative.class]) {
+            RCTLogError(@"Cannot find NativeView with tag #%@", reactTag);
+            return;
+        }
+
+        [((RCTWebViewAlternative *)view).scrollView setContentOffset:(CGPoint){x, y} animated:animated];
+    }];
+}
+
 RCT_EXPORT_VIEW_PROPERTY(scrollEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(keyboardDisplayRequiresUserAction, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(hideKeyboardAccessoryView, BOOL)

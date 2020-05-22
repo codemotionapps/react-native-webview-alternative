@@ -6,16 +6,27 @@ interface WebViewAlternativePropsIOS {
 	hideKeyboardAccessoryView?: boolean
 }
 
+export interface WebViewMessageEvent {
+	nativeEvent: { message: object | string | number | boolean }
+}
+
 interface WebViewAlternativeProps extends ViewProps, WebViewAlternativePropsIOS {
 	source?: { html: string; baseURL?: string } | null
 	children?: ReactNode
 	scrollEnabled?: boolean
 	onLoad?(): void
-	onMessage?(event: { nativeEvent: { message: object | string | number | boolean } }): void
+	onMessage?(event: WebViewMessageEvent): void
+}
+
+export interface ScrollToOptions {
+	x?: number
+	y?: number
+	animated?: boolean
 }
 
 export interface WebViewAlternativeRef {
 	focus(): void
+	scrollTo(options?: ScrollToOptions): void
 	injectJavaScript(string: string): void
 }
 
@@ -52,6 +63,13 @@ function WebViewAlternative({ source = null, ...props }: WebViewAlternativeProps
 				findNodeHandle(nativeComponentRef.current),
 				UIManager.getViewManagerConfig('WebViewAlternative').Commands.focus,
 				undefined,
+			)
+		},
+		scrollTo({ x = 0, y = 0, animated = true }: ScrollToOptions = {}) {
+			UIManager.dispatchViewManagerCommand(
+				findNodeHandle(nativeComponentRef.current),
+				UIManager.getViewManagerConfig('WebViewAlternative').Commands.scrollTo,
+				[x, y, animated],
 			)
 		},
 		injectJavaScript(string: string) {

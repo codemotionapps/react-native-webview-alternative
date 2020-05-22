@@ -14,7 +14,10 @@
 - (BOOL)keyboardDisplayRequiresUserAction {
     if (_webView == nil) return YES;
 
-    if ([_webView respondsToSelector:sel_getUid("keyboardDisplayRequiresUserAction")]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    if ([_webView respondsToSelector:@selector(keyboardDisplayRequiresUserAction)]) {
+#pragma clang diagnostic pop
         return [(RCTWebViewAlternative *)_webView keyboardDisplayRequiresUserAction];
     }
 
@@ -24,7 +27,10 @@
 - (BOOL)hideKeyboardAccessoryView {
     if (_webView == nil) return YES;
 
-    if ([_webView respondsToSelector:sel_getUid("hideKeyboardAccessoryView")]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    if ([_webView respondsToSelector:@selector(hideKeyboardAccessoryView)]) {
+#pragma clang diagnostic pop
         return [(RCTWebViewAlternative *)_webView hideKeyboardAccessoryView];
     }
 
@@ -68,10 +74,16 @@
     Class contentViewClass = objc_lookUpClass("WKContentView");
     IMP override;
 
-    SEL keyboardDisplayRequiresUserActionSelector = sel_getUid("keyboardDisplayRequiresUserAction");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    SEL keyboardDisplayRequiresUserActionSelector = @selector(keyboardDisplayRequiresUserAction);
+#pragma clang diagnostic pop
     BOOL (* getKeyboardDisplayRequiresUserAction)(id, SEL) = (BOOL (*)(id, SEL))method_getImplementation(class_getInstanceMethod(RCTWebViewAlternativeContentViewHelper.class, keyboardDisplayRequiresUserActionSelector));
     if (@available(iOS 13.0.0, *)) {
-        SEL selector = sel_getUid("_elementDidFocus:userIsInteracting:blurPreviousNode:activityStateChanges:userObject:");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+        SEL selector = @selector(_elementDidFocus:userIsInteracting:blurPreviousNode:activityStateChanges:userObject:);
+#pragma clang diagnostic pop
         method = class_getInstanceMethod(contentViewClass, selector);
         IMP original = method_getImplementation(method);
         override = imp_implementationWithBlock(^void(UIView *this, void *information, BOOL userIsInteracting, BOOL blurPreviousNode, uint activityStateChanges, id userObject) {
@@ -79,7 +91,10 @@
             ((void (*)(id, SEL, void*, BOOL, BOOL, uint, id))original)(this, selector, information, TRUE, blurPreviousNode, activityStateChanges, userObject);
         });
     } else if (@available(iOS 12.2.0, *)) {
-        SEL selector = sel_getUid("_elementDidFocus:userIsInteracting:blurPreviousNode:changingActivityState:userObject:");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+        SEL selector = @selector(_elementDidFocus:userIsInteracting:blurPreviousNode:changingActivityState:userObject:);
+#pragma clang diagnostic pop
         method = class_getInstanceMethod(contentViewClass, selector);
         IMP original = method_getImplementation(method);
         override = imp_implementationWithBlock(^void(UIView *this, void* arg0, BOOL userIsInteracting, BOOL arg2, BOOL arg3, id arg4) {
@@ -87,7 +102,10 @@
             ((void (*)(id, SEL, void*, BOOL, BOOL, BOOL, id))original)(this, selector, arg0, TRUE, arg2, arg3, arg4);
         });
     } else if (@available(iOS 11.3.0, *)) {
-        SEL selector = sel_getUid("_startAssistingNode:userIsInteracting:blurPreviousNode:changingActivityState:userObject:");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+        SEL selector = @selector(_startAssistingNode:userIsInteracting:blurPreviousNode:changingActivityState:userObject:);
+#pragma clang diagnostic pop
         method = class_getInstanceMethod(contentViewClass, selector);
         IMP original = method_getImplementation(method);
         override = imp_implementationWithBlock(^void(UIView *this, void *arg0, BOOL userIsInteracting, BOOL arg2, BOOL arg3, id arg4) {
@@ -95,7 +113,10 @@
             ((void (*)(id, SEL, void *, BOOL, BOOL, BOOL, id))original)(this, selector, arg0, TRUE, arg2, arg3, arg4);
         });
     } else {
-        SEL selector = sel_getUid("_startAssistingNode:userIsInteracting:blurPreviousNode:userObject:");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+        SEL selector = @selector(_startAssistingNode:userIsInteracting:blurPreviousNode:userObject:);
+#pragma clang diagnostic pop
         method = class_getInstanceMethod(contentViewClass, selector);
         IMP original = method_getImplementation(method);
         override = imp_implementationWithBlock(^void(UIView *this, void *arg0, BOOL userIsInteracting, BOOL arg2, id arg3) {
@@ -120,8 +141,11 @@
     if (method != nil) return; // Already swizzled
 
     Class contentViewClass = objc_lookUpClass("WKContentView");
-    SEL inputAccessoryViewSelector = sel_getUid("inputAccessoryView");
-    SEL hideKeyboardAccessoryViewSelector = sel_getUid("hideKeyboardAccessoryView");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    SEL inputAccessoryViewSelector = @selector(inputAccessoryView);
+    SEL hideKeyboardAccessoryViewSelector = @selector(hideKeyboardAccessoryView);
+#pragma clang diagnostic pop
     BOOL (* getHideKeyboardAccessoryViewSelector)(id, SEL) = (BOOL (*)(id, SEL))method_getImplementation(class_getInstanceMethod(RCTWebViewAlternativeContentViewHelper.class, hideKeyboardAccessoryViewSelector));
     method = class_getInstanceMethod(contentViewClass, inputAccessoryViewSelector);
     IMP original = method_getImplementation(method);
