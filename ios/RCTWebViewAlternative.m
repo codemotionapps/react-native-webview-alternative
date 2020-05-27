@@ -45,6 +45,17 @@
 
 @implementation RCTWebViewAlternative
 
+- (instancetype)init {
+    if ((self = [super init])) { // -[UIView init] calls initWithFrame:, -[WKWebView initWithFrame:] calls initWithFrame:configuration:
+        [self.configuration.userContentController addScriptMessageHandler:self name:@"jsMessageHandler"];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    @throw [NSException exceptionWithName:@"Unsupported method" reason:nil userInfo:nil];
+}
+
 - (UIView *)contentView {
     UIView *contentView;
     [[self valueForKey:@"_contentView"] getValue:&contentView];
@@ -165,6 +176,16 @@
     self.onMessage(@{
         @"message": message.body,
     });
+}
+
+#pragma mark - UIView
+
+- (void)willMoveToSuperview:(UIView *)newSuperview {
+    [super willMoveToSuperview:newSuperview];
+    
+    if (newSuperview == nil) {
+        [self.configuration.userContentController removeScriptMessageHandlerForName:@"jsMessageHandler"];
+    }
 }
 
 @end

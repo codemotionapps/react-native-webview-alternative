@@ -1,6 +1,6 @@
 {
   "name": "react-native-webview-alternative",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Alternative to react-native-webview",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",

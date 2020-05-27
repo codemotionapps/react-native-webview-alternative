@@ -15,7 +15,6 @@ RCT_EXPORT_MODULE(WebViewAlternative)
 - (RCTWebViewAlternative *)view {
     RCTWebViewAlternative *view = [RCTWebViewAlternative new];
     view.navigationDelegate = self;
-    [view.configuration.userContentController addScriptMessageHandler:view name:@"jsMessageHandler"];
     return view;
 }
 
